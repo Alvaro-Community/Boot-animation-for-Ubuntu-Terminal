@@ -2,10 +2,9 @@
 
 Launcher terminal bergaya boot untuk Ubuntu yang berjalan di WSL2.
 
+## 🎬 Demo Ubuntu Terminal Boot
 
-[▶ Watch Demo](./Demo.mp4)
-
-[📥 Download Demo.mp4](./Demo.mp4)
+![Ubuntu Terminal Boot Demo](./Demo.gif)
 
 ## Fitur
 
