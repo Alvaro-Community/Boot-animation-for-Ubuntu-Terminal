@@ -1,6 +1,6 @@
 # Ubuntu Terminal Boot 1.1.0
 
-Launcher terminal bergaya boot untuk Ubuntu yang berjalan di WSL2.
+**Ubuntu Terminal Boot (UTB)** adalah launcher terminal bergaya boot untuk Ubuntu yang berjalan di WSL2.
 
 ## 🎬 Demo Ubuntu Terminal Boot
 
@@ -9,90 +9,115 @@ Launcher terminal bergaya boot untuk Ubuntu yang berjalan di WSL2.
 ## 📥 Download & Install UTB di Ubuntu WSL
 
 ### 1. Download UTB
+
 Buka halaman GitHub Releases:
 
 [⬇️ Download Ubuntu Terminal Boot](../../releases/latest)
 
-Download file `Ubuntu-Terminal-Boot.tar.gz` ke folder Downloads Windows.
+Download file **Ubuntu-Terminal-Boot-1.1.0.tar.gz** ke folder Downloads Windows.
 
 ### 2. Buka Ubuntu WSL
 
-Jalankan perintah berikut:
+Buat folder Downloads di Ubuntu:
 
 ```bash
 mkdir -p ~/Downloads
+```
 
-## Fitur
+### 3. Pindahkan file dari Windows ke Ubuntu
+
+```bash
+WIN_USER="$(powershell.exe -NoProfile -Command '$env:USERNAME' | tr -d '\r')"
+cp "/mnt/c/Users/$WIN_USER/Downloads/Ubuntu-Terminal-Boot-1.1.0.tar.gz" ~/Downloads/
+```
+
+### 4. Ekstrak file
+
+```bash
+cd ~/Downloads
+tar -xzf Ubuntu-Terminal-Boot-1.1.0.tar.gz
+```
+
+### 5. Masuk ke folder UTB
+
+```bash
+cd ~/Downloads/Ubuntu-Terminal-Boot-1.1.0
+```
+
+### 6. Jalankan installer
+
+```bash
+bash install.sh
+```
+
+Tutup terminal Ubuntu, lalu buka kembali untuk mencoba UTB.
+
+## ✨ Fitur
 
 - Menampilkan logo teks Ubuntu dan informasi versi.
-- Menampilkan beberapa log sistem terbaru dari `journalctl`.
-- Mendeteksi akun pengguna biasa secara otomatis.
+- Menampilkan log sistem terbaru dari `journalctl`.
+- Mendeteksi akun pengguna Ubuntu secara otomatis.
 - Menampilkan nama lengkap dan username akun.
-- Memakai autentikasi Ubuntu melalui `su`/PAM.
-- Tidak menampilkan pilihan `q. Exit`.
-- `Ctrl+C` menghentikan UTB. Karena UTB dijalankan dengan `exec` dari konfigurasi shell, sesi terminal akan berakhir.
+- Menggunakan autentikasi Ubuntu melalui `su`/PAM.
+- Tidak menyediakan pilihan `q. Exit`.
+- Mendukung penghentian UTB dengan `Ctrl+C`.
 - Auto-start dapat diaktifkan atau dinonaktifkan.
 
-## Instalasi
+## ⚙️ Mengatur Auto-start
 
-1. Ekstrak ZIP ini di Ubuntu/WSL atau letakkan foldernya di lokasi yang mudah ditemukan.
-2. Buka terminal Ubuntu.
-3. Masuk ke folder hasil ekstrak, misalnya:
-
-   ```bash
-   cd ~/Downloads/Ubuntu-Terminal-Boot-1.1.0
-   ```
-
-4. Jalankan:
-
-   ```bash
-   chmod +x install.sh
-   ./install.sh
-   ```
-
-5. Tutup terminal Ubuntu, lalu buka kembali.
-
-## Mengatur auto-start
-
-File pengelola berada di:
+File pengelola auto-start:
 
 ```bash
 ~/.local/share/ubuntu-terminal-boot/manage-autostart.sh
 ```
 
-Matikan auto-start (UTB tetap terpasang):
+**Mematikan auto-start:**
 
 ```bash
 ~/.local/share/ubuntu-terminal-boot/manage-autostart.sh off
 ```
 
-Aktifkan kembali:
+**Mengaktifkan kembali:**
 
 ```bash
 ~/.local/share/ubuntu-terminal-boot/manage-autostart.sh on
 ```
 
-Periksa status:
+**Memeriksa status:**
 
 ```bash
 ~/.local/share/ubuntu-terminal-boot/manage-autostart.sh status
 ```
 
-## Menghapus UTB
+## 🗑️ Menghapus UTB
+
+Masuk ke folder hasil ekstrak UTB, kemudian jalankan:
 
 ```bash
-cd ~/Downloads/Ubuntu-Terminal-Boot-1.1.0
-./uninstall.sh
+bash uninstall.sh
 ```
 
-Penghapusan menonaktifkan auto-start dan menghapus berkas UTB. Cadangan `.bashrc.backup-utb` dibiarkan tetap ada.
+Perintah ini menonaktifkan auto-start dan menghapus berkas UTB yang terpasang.
 
-## Catatan penting
+## 📝 Catatan Penting
 
-- Auto-start berjalan ketika sesi shell interaktif Ubuntu WSL dibuka. Ini bukan proses boot firmware/BIOS dan bukan pengganti login manager Linux.
-- WSL sudah memulai sesi pengguna default sebelum UTB berjalan. UTB adalah launcher/pemilih akun, bukan batas keamanan yang mengunci akses ke WSL atau Windows.
-- `su` mungkin tidak meminta kata sandi saat memilih akun yang sama dengan akun yang sedang menjalankan WSL. Akun lain akan mengikuti aturan autentikasi Ubuntu/PAM.
-- Nama akun ditampilkan dari data akun lokal (GECOS); bila nama lengkap kosong, UTB menampilkan username.
-- UTB tidak menyimpan atau meminta kata sandi untuk dimasukkan ke dalam berkas.
-- Log yang ditampilkan adalah log terbaru yang tersedia, bukan rekaman proses boot langsung.
-- Paket ini ditujukan untuk Ubuntu di WSL2 dengan Bash, `su`, `getent`, dan 
+- Auto-start berjalan ketika shell interaktif Ubuntu WSL dibuka. Ini bukan proses boot BIOS atau pengganti login manager Linux.
+- WSL sudah memulai sesi pengguna default sebelum UTB berjalan.
+- UTB bukan sistem keamanan yang mengunci akses ke WSL atau Windows.
+- `su` mungkin tidak meminta kata sandi ketika memilih akun yang sama dengan akun aktif.
+- Nama akun diambil dari data pengguna Ubuntu. Jika nama lengkap kosong, UTB menampilkan username.
+- UTB tidak menyimpan kata sandi pengguna.
+- Log yang ditampilkan merupakan log terbaru yang tersedia, bukan rekaman boot langsung.
+- UTB ditujukan untuk Ubuntu WSL2 dengan Bash, `su`, `getent`, dan `journalctl`.
+
+## 📦 Teknologi
+
+- Ubuntu
+- WSL2
+- Bash Shell Script
+- systemd / journalctl
+- PAM / su
+
+## 📄 License
+
+Tambahkan informasi lisensi proyek di sini sebelum mendistribusikannya.
