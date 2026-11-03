@@ -6,6 +6,22 @@ Launcher terminal bergaya boot untuk Ubuntu yang berjalan di WSL2.
 
 ![Ubuntu Terminal Boot Demo](./Demo.gif)
 
+## 📥 Download & Install UTB di Ubuntu WSL
+
+### 1. Download UTB
+Buka halaman GitHub Releases:
+
+[⬇️ Download Ubuntu Terminal Boot](../../releases/latest)
+
+Download file `Ubuntu-Terminal-Boot.tar.gz` ke folder Downloads Windows.
+
+### 2. Buka Ubuntu WSL
+
+Jalankan perintah berikut:
+
+```bash
+mkdir -p ~/Downloads
+
 ## Fitur
 
 - Menampilkan logo teks Ubuntu dan informasi versi.
