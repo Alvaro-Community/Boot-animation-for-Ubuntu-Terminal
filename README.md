@@ -1,123 +1,150 @@
-# Ubuntu Terminal Boot 1.1.0
+# Ubuntu Terminal Boot (UTB) 1.1.0
 
-**Ubuntu Terminal Boot (UTB)** adalah launcher terminal bergaya boot untuk Ubuntu yang berjalan di WSL2.
+A terminal boot-style launcher for **Ubuntu on WSL2**.
 
-## 🎬 Demo Ubuntu Terminal Boot
+> **Status:** This project is designed for Ubuntu running under WSL2. It is a shell launcher, not a replacement for the Linux boot process or a secure system login manager.
 
-![Ubuntu Terminal Boot Demo](./Demo.gif)
+## 🎬 Demo
 
-## 📥 Download & Install UTB di Ubuntu WSL
+![Ubuntu Terminal Boot demo](./Demo.gif)
 
-### 1. Download UTB
+## ✨ Features
 
-Buka halaman GitHub Releases:
+- Ubuntu-inspired terminal startup screen.
+- Displays recent system journal entries with `journalctl`.
+- Detects eligible local user accounts automatically.
+- Shows each account's display name and username.
+- Opens the selected account using Ubuntu's `su`/PAM authentication.
+- Optional automatic launch when an interactive WSL Bash shell starts.
+- Commands to enable or disable automatic launch.
 
-[⬇️ Download Ubuntu Terminal Boot](../../releases/latest)
+## 📥 Download
 
-Download file **Ubuntu-Terminal-Boot-1.1.0.tar.gz** ke folder Downloads Windows.
+1. Open this repository's **Releases** page.
+2. Open the release for **UTB 1.1.0**.
+3. Under **Assets**, download:
 
-### 2. Buka Ubuntu WSL
+   `Boot-animation-for-Ubuntu-Terminal-1.1.0.zip`
 
-Buat folder Downloads di Ubuntu:
+   Download the release asset, not GitHub's automatically generated **Source code** archive.
+
+## 🪟 Install from Windows Downloads into Ubuntu WSL
+
+These instructions assume the ZIP file was saved in the Windows user's **Downloads** folder.
+
+### 1. Open Ubuntu (WSL)
+
+Open your Ubuntu distribution from the Windows Start menu.
+
+### 2. Make a Downloads folder in Ubuntu
 
 ```bash
 mkdir -p ~/Downloads
 ```
 
-### 3. Pindahkan file dari Windows ke Ubuntu
+### 3. Extract the ZIP from Windows Downloads
+
+Replace `WINDOWS_USERNAME` with the name of your Windows profile folder.
+
+For example, if your Windows Downloads folder is `C:\Users\Alvaro\Downloads`, use `Alvaro`.
 
 ```bash
-WIN_USER="$(powershell.exe -NoProfile -Command '$env:USERNAME' | tr -d '\r')"
-cp "/mnt/c/Users/$WIN_USER/Downloads/Ubuntu-Terminal-Boot-1.1.0.tar.gz" ~/Downloads/
+unzip "/mnt/c/Users/WINDOWS_USERNAME/Downloads/Boot-animation-for-Ubuntu-Terminal-1.1.0.zip" -d ~/Downloads/UTB
 ```
 
-### 4. Ekstrak file
+If `unzip` is not installed, install it first:
 
 ```bash
-cd ~/Downloads
-tar -xzf Ubuntu-Terminal-Boot-1.1.0.tar.gz
+sudo apt update
+sudo apt install unzip
 ```
 
-### 5. Masuk ke folder UTB
+Then run the extraction command again.
+
+### 4. Find the installer
+
+This command finds `install.sh` even if the ZIP contains an extra folder level:
 
 ```bash
-cd ~/Downloads/Ubuntu-Terminal-Boot-1.1.0
+find ~/Downloads/UTB -type f -name install.sh -print
 ```
 
-### 6. Jalankan installer
+### 5. Run the installer
+
+These commands locate the installer automatically and start it:
 
 ```bash
-bash install.sh
+INSTALLER="$(find ~/Downloads/UTB -type f -name install.sh -print -quit)"
+if [ -z "$INSTALLER" ]; then
+    echo "install.sh was not found. Check the extracted ZIP contents."
+else
+    cd "$(dirname "$INSTALLER")" && bash install.sh
+fi
 ```
 
-Tutup terminal Ubuntu, lalu buka kembali untuk mencoba UTB.
+When installation finishes, close the Ubuntu terminal window or tab and open Ubuntu again to test automatic launch.
 
-## ✨ Fitur
+## ⚙️ Manage automatic launch
 
-- Menampilkan logo teks Ubuntu dan informasi versi.
-- Menampilkan log sistem terbaru dari `journalctl`.
-- Mendeteksi akun pengguna Ubuntu secara otomatis.
-- Menampilkan nama lengkap dan username akun.
-- Menggunakan autentikasi Ubuntu melalui `su`/PAM.
-- Tidak menyediakan pilihan `q. Exit`.
-- Mendukung penghentian UTB dengan `Ctrl+C`.
-- Auto-start dapat diaktifkan atau dinonaktifkan.
+The installer places UTB in:
 
-## ⚙️ Mengatur Auto-start
-
-File pengelola auto-start:
-
-```bash
-~/.local/share/ubuntu-terminal-boot/manage-autostart.sh
+```text
+~/.local/share/ubuntu-terminal-boot
 ```
 
-**Mematikan auto-start:**
-
-```bash
-~/.local/share/ubuntu-terminal-boot/manage-autostart.sh off
-```
-
-**Mengaktifkan kembali:**
-
-```bash
-~/.local/share/ubuntu-terminal-boot/manage-autostart.sh on
-```
-
-**Memeriksa status:**
+Check whether automatic launch is enabled:
 
 ```bash
 ~/.local/share/ubuntu-terminal-boot/manage-autostart.sh status
 ```
 
-## 🗑️ Menghapus UTB
+Disable automatic launch (UTB remains installed):
 
-Masuk ke folder hasil ekstrak UTB, kemudian jalankan:
+```bash
+~/.local/share/ubuntu-terminal-boot/manage-autostart.sh off
+```
+
+Enable automatic launch again:
+
+```bash
+~/.local/share/ubuntu-terminal-boot/manage-autostart.sh on
+```
+
+## 🗑️ Uninstall
+
+Go to the extracted UTB folder and run its uninstaller:
 
 ```bash
 bash uninstall.sh
 ```
 
-Perintah ini menonaktifkan auto-start dan menghapus berkas UTB yang terpasang.
+If you no longer know where the extracted folder is, find it with:
 
-## 📝 Catatan Penting
+```bash
+find ~/Downloads/UTB -type f -name uninstall.sh -print
+```
 
-- Auto-start berjalan ketika shell interaktif Ubuntu WSL dibuka. Ini bukan proses boot BIOS atau pengganti login manager Linux.
-- WSL sudah memulai sesi pengguna default sebelum UTB berjalan.
-- UTB bukan sistem keamanan yang mengunci akses ke WSL atau Windows.
-- `su` mungkin tidak meminta kata sandi ketika memilih akun yang sama dengan akun aktif.
-- Nama akun diambil dari data pengguna Ubuntu. Jika nama lengkap kosong, UTB menampilkan username.
-- UTB tidak menyimpan kata sandi pengguna.
-- Log yang ditampilkan merupakan log terbaru yang tersedia, bukan rekaman boot langsung.
-- UTB ditujukan untuk Ubuntu WSL2 dengan Bash, `su`, `getent`, dan `journalctl`.
+The uninstaller disables the UTB auto-start hook and removes the installed UTB program files. It does not delete Ubuntu itself or your Ubuntu user accounts.
 
-## 📦 Teknologi
+## 📝 Important notes and limitations
 
-- Ubuntu
-- WSL2
-- Bash Shell Script
-- systemd / journalctl
-- PAM / su
+- Auto-start runs when an interactive Bash shell starts in WSL. It is not a BIOS/firmware boot screen and does not replace a Linux display or login manager.
+- WSL starts its default Linux user session before UTB runs. UTB is a launcher and account selector, **not a security boundary** that locks Windows or WSL.
+- `su` may not ask for a password when the currently logged-in user selects their own account. Authentication behavior follows the system's `su` and PAM configuration.
+- Recent journal entries are displayed; this is not a live recording of the boot process.
+- Account display names are read from local account information. If no display name is set, UTB shows the username.
+- UTB does not store users' passwords.
+- This release may display `cannot set terminal process group` or `no job control` when opening a selected account. These messages indicate a terminal job-control issue in the current launcher; they do not necessarily mean the password was rejected. This issue should be fixed before describing the release as production-ready.
+- The Windows-to-WSL path `/mnt/c/...` assumes that the Windows C: drive is mounted in WSL using the default mount configuration.
+
+## 🧰 Requirements
+
+- Windows with WSL2 enabled.
+- An Ubuntu WSL distribution.
+- Bash.
+- `su`, `getent`, and `journalctl`.
+- `unzip` to extract the release package.
 
 ## 📄 License
 
-Tambahkan informasi lisensi proyek di sini sebelum mendistribusikannya.
+No license has been specified yet. Unless a license is added to this repository, others do not automatically receive permission to redistribute or modify the project.
