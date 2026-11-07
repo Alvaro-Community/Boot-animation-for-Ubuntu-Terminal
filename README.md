@@ -1,6 +1,4 @@
-from pathlib import Path
 
-content = r'''# Ubuntu Terminal Boot (UTB) 1.1.0
 
 A terminal boot-style launcher for **Ubuntu on WSL2**.
 
