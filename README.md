@@ -152,10 +152,3 @@ The uninstaller disables the UTB auto-start hook and removes the installed UTB p
 - `su`, `getent`, and `journalctl`.
 - `unzip` to extract the release package.
 
-## 📄 License
-
-No license has been specified yet. Unless a license is added to this repository, others do not automatically receive permission to redistribute or modify the project.
-'''
-path = Path("/mnt/data/README-UTB-1.1.0-Universal.md")
-path.write_text(content, encoding="utf-8", newline="\n")
-print(f"Created: {path} ({path.stat().st_size:,} bytes)")
